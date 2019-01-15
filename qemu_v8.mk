@@ -5,17 +5,19 @@
 
 
 ### Below are all variables which will be used during building period ##########
-
 QEMU_PATH		?= $(ROOT)/qemu
 SOC_TERM_PATH		?= $(ROOT)/soc_term
 
+FILESYSTEM_L1_PATH ?= $(ROOT)/filesystem_L1
+SRC_FILESYSTEM_L1 ?= https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-arm64-uefi1.img 
+FILESYSTEM_L1_NAME ?= $(FILESYSTEM_L1_PATH)/ubuntu.qcow2
 
 ################## Below are all modules' define ###############################
 
 ################################################################################
 # all 
 ################################################################################
-all: qemu soc-term linux update_rootfs xen
+all: qemu soc-term linux update_rootfs xen filesystem
 clean: busybox-clean edk2-clean linux-clean qemu-clean \
 
 
@@ -35,6 +37,19 @@ soc-term-clean:
 ################################################################################
 xen: xen-common
 
+################################################################################
+# filesystem of L1
+################################################################################
+define dlfs                                                                                                                                                             
+	@if [ ! -f "$(FILESYSTEM_L1_NAME)" ]; then \
+		mkdir -p $(FILESYSTEM_L1_PATH); \
+		echo "Downloading $(FILESYSTEM_L1_NAME) ..."; \
+		wget $(SRC_FILESYSTEM_L1) -O $(FILESYSTEM_L1_NAME); \
+	fi
+endef
+
+filesystem:
+	$(call dlfs)
 
 
 ################################################################################
