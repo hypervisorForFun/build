@@ -8,8 +8,12 @@ ROOT ?= $(shell pwd)/..
 BUILD_PATH			?= $(ROOT)/build
 LINUX_PATH			?= $(ROOT)/linux
 XEN_PATH			?= $(ROOT)/xen
+OUT_PATH			?= $(ROOT)/out/
 GEN_ROOTFS_PATH		?= $(ROOT)/gen_rootfs
 GEN_ROOTFS_FILELIST ?= $(GEN_ROOTFS_PATH)/filelist-tee.txt 
+
+LINUX_OUTPUT_IMAGE ?= $(LINUX_PATH)/arch/arm64/boot/Image.gz
+
 
 
 QEMU_CONFIGURE_PARAMS_COMMON = --cc="gcc" --extra-cflags="-Wno-error"
@@ -25,6 +29,8 @@ LINUX_COMMON_FLAGS ?= CROSS_COMPILE=$(AARCH64_CROSS_COMPILE)
 .PHONY: linux-common
 linux-common: linux-defconfig
 	$(MAKE) -C $(LINUX_PATH) $(LINUX_COMMON_FLAGS)
+	$(shell cp $(LINUX_OUTPUT_IMAGE) $(OUT_PATH))
+
 
 $(LINUX_PATH)/.config: $(LINUX_DEFCONFIG_COMMON_FILES)
 	cd $(LINUX_PATH) && \

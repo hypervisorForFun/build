@@ -17,16 +17,30 @@ FILESYSTEM_L1_NAME ?= $(FILESYSTEM_L1_PATH)/ubuntu.qcow2
 ################################################################################
 # all 
 ################################################################################
-all: qemu soc-term linux update_rootfs xen filesystem
+all: out qemu soc-term linux update_rootfs xen filesystem
 clean: busybox-clean edk2-clean linux-clean qemu-clean \
 
 
 
 ################################################################################
+# output
+################################################################################
+define create_output                                                                                                                                                             
+	@if [ ! -f "$(OUT_PATH)" ]; then \
+		mkdir -p $(OUT_PATH); \
+	fi
+endef
+out:
+	$(call create_output)
+   
+
+
+################################################################################
 # Soc-term
 ################################################################################
-soc-term:
+soc-term:out
 	$(MAKE) -C $(SOC_TERM_PATH)
+	$(shell cp $(SOC_TERM_PATH)/soc_term $(OUT_PATH))
 
 soc-term-clean:
 	$(MAKE) -C $(SOC_TERM_PATH) clean
@@ -35,7 +49,8 @@ soc-term-clean:
 ################################################################################
 # xen
 ################################################################################
-xen: xen-common
+xen: xen-common out
+	$(shell cp $(XEN_PATH)/xen/xen.efi $(OUT_PATH))
 
 ################################################################################
 # filesystem of L1
@@ -48,8 +63,9 @@ define dlfs
 	fi
 endef
 
-filesystem:
+filesystem: out
 	$(call dlfs)
+	$(shell cp $(FILESYSTEM_L1_NAME) $(OUT_PATH))
 
 
 ################################################################################
@@ -64,7 +80,7 @@ linux-defconfig: $(LINUX_PATH)/.config
 
 LINUX_COMMON_FLAGS += ARCH=arm64
 
-linux: linux-common
+linux: linux-common out
 
 linux-defconfig-clean: linux-defconfig-clean-common
 
@@ -85,7 +101,7 @@ linux-cleaner: linux-cleaner-common
 ################################################################################
 # QEMU
 ################################################################################
-qemu:
+qemu: out
 	cd $(QEMU_PATH); ./configure --target-list=aarch64-softmmu\
 			$(QEMU_CONFIGURE_PARAMS_COMMON)
 	$(MAKE) -C $(QEMU_PATH)
@@ -103,6 +119,7 @@ qemu-clean:
 ################################################################################
 filelist-tee: filelist-tee-common
 update_rootfs: update_rootfs-common
+	$(shell cp $(GEN_ROOT_PATH)/filesystem.cpio.gz $(OUT_PATH))
 
 
 
@@ -115,7 +132,7 @@ BUSYBOX_COMMON_TARGET = vexpress
 BUSYBOX_CLEAN_COMMON_TARGET = vexpress clean
 BUSYBOX_COMMON_CCDIR = $(AARCH64_PATH)
 
-busybox: busybox-common
+busybox: busybox-common out
 
 busybox-clean: busybox-clean-common
 
