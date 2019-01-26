@@ -65,6 +65,8 @@ $ cd $HOME/devel/hypervisorForFun
 $ repo init -u https://github.com/hypervisorForFun/manifest.git -m default.xml --repo-url=git://codeaurora.org/tools/repo.git
 $ repo sync -j8
 ```
+Please use default_cn.xml instead of default.xml if you work that in China.
+
 ## 3.4 Get the toolchains
 In hypervisorForFun we're using different toolchains for different targets (depends on
 ARMv7-A ARMv8-A 64/32bit solutions). In any case start by downloading the
