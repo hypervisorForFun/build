@@ -7,17 +7,20 @@
 ### Below are all variables which will be used during building period ##########
 QEMU_PATH		?= $(ROOT)/qemu
 SOC_TERM_PATH		?= $(ROOT)/soc_term
+UEFI_PATH	?= $(ROOT)/uefi_image
 
 FILESYSTEM_L1_PATH ?= $(ROOT)/filesystem_L1
 SRC_FILESYSTEM_L1 ?= https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-arm64-uefi1.img 
 FILESYSTEM_L1_NAME ?= $(FILESYSTEM_L1_PATH)/ubuntu.qcow2
+
+CFG_REBUILD_UEFI  ?= y
 
 ################## Below are all modules' define ###############################
 
 ################################################################################
 # all 
 ################################################################################
-all: out qemu soc-term linux update_rootfs xen filesystem
+all: out qemu soc-term linux update_rootfs xen filesystem edk2
 clean: busybox-clean edk2-clean linux-clean qemu-clean \
 
 
@@ -44,6 +47,16 @@ soc-term:out
 
 soc-term-clean:
 	$(MAKE) -C $(SOC_TERM_PATH) clean
+
+################################################################################
+# edk2
+################################################################################
+ifeq ($(CFG_REBUILD_UEFI),y)
+edk2: edk2-common out
+else
+edk2: out
+endif
+	$(shell cp $(UEFI_PATH)/QEMU_EFI.fd $(OUT_PATH))
 
 
 ################################################################################

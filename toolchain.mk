@@ -14,6 +14,9 @@ AARCH64_CROSS_COMPILE 		?= $(AARCH64_PATH)/bin/aarch64-linux-gnu-
 AARCH64_GCC_VERSION 		?= gcc-linaro-6.2.1-2016.11-x86_64_aarch64-linux-gnu
 SRC_AARCH64_GCC 		?= http://releases.linaro.org/components/toolchain/binaries/6.2-2016.11/aarch64-linux-gnu/${AARCH64_GCC_VERSION}.tar.xz
 
+GCC49_AARCH64_PREFIX 		?= $(AARCH64_PATH)/bin/aarch64-linux-gnu-
+GCC49_ARM_PREFIX 		?= $(AARCH32_PATH)/bin/arm-linux-gnueabihf-
+
 # Due to relocation error on the 96board edk forest, let's keep the old
 # toolchain for a while.
 LEGACY_AARCH64_PATH             ?= $(TOOLCHAIN_ROOT)/aarch64-legacy

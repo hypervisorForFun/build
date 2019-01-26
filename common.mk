@@ -7,6 +7,7 @@ BASH ?= bash
 ROOT ?= $(shell pwd)/..
 BUILD_PATH			?= $(ROOT)/build
 LINUX_PATH			?= $(ROOT)/linux
+EDK2_PATH			?= $(ROOT)/edk2
 XEN_PATH			?= $(ROOT)/xen
 OUT_PATH			?= $(ROOT)/out/
 GEN_ROOTFS_PATH		?= $(ROOT)/gen_rootfs
@@ -70,7 +71,16 @@ xen-common:
 	$(MAKE) $(XEN_COMMON_FLAGS) dist-xen
 
 
-
+################################################################################
+# edk2-common
+################################################################################
+.PHONY: edk2-common
+edk2-common:
+	cd $(EDK2_PATH) && \
+	$(MAKE) -C BaseTools && \
+	source edksetup.sh && \
+	build -a AARCH64 -t GCC49 -p ArmVirtPkg/ArmVirtQemu.dsc && \
+	cp Build/ArmVirtQemu-AARCH64/DEBUG_GCC49/FV/QEMU_EFI.fd $(UEFI_PATH)/
 	
 	
 
