@@ -74,7 +74,18 @@ $ cd build
 $ make -f toolchains.mk toolchains
 ```
 
-## 3.5 Build the solution
+## 3.5 sync sub-git of edk2
+In hypervisorForFun, there are a default UEFI image whcih can be used to load xen, But
+if you want to rebuild it, you needd to syn code of openssl in path of edk2.  you can 
+use below command to do this:
+```bash
+$ cd edk2
+$ git submodule update --init --recursive
+```
+In default condition, build system will not rebuild uefi image, but you can rebuild
+uefi image by changing variable of "CFG_REBUILD_UEFI" to "y"
+
+## 3.6 Build the solution
 We've configured our repo manifests, so that repo will always automatically
 symlink the `Makefile` to the correct device specific makefile, that means that
 you simply start the build by running:
