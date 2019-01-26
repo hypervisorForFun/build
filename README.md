@@ -57,6 +57,12 @@ $ sudo apt-get install android-tools-adb android-tools-fastboot autoconf \
 
 
 ## 3.2 Get the source code
+First of all, you need the tool of repo to download source code.
+```bash
+curl https://storage.googleapis.com/git-repo-downloads/repo -o repo
+#mirror in China
+curl https://mirrors.tuna.tsinghua.edu.cn/git/git-repo -o repo
+```
 You can use below command to get all source code of this project
 
 ```bash
