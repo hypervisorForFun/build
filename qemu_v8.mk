@@ -12,6 +12,7 @@ UEFI_PATH	?= $(ROOT)/uefi_image
 FILESYSTEM_L1_PATH ?= $(ROOT)/filesystem_L1
 SRC_FILESYSTEM_L1 ?= https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-arm64-uefi1.img 
 FILESYSTEM_L1_NAME ?= $(FILESYSTEM_L1_PATH)/ubuntu.qcow2
+GEN_ROOT_PATH ?= $(ROOT)/gen_rootfs
 
 CFG_REBUILD_UEFI  ?= n
 
@@ -132,7 +133,7 @@ qemu-clean:
 ################################################################################
 filelist-tee: filelist-tee-common
 update_rootfs: update_rootfs-common
-	$(shell cp $(GEN_ROOT_PATH)/filesystem.cpio.gz $(OUT_PATH))
+	$(shell cp -rf $(GEN_ROOT_PATH)/filesystem.cpio.gz $(OUT_PATH))
 
 
 
