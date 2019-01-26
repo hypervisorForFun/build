@@ -57,6 +57,12 @@ $ sudo apt-get install android-tools-adb android-tools-fastboot autoconf \
 
 
 ## 3.2 Get the source code
+First of all, you need the tool of repo to download source code.
+```bash
+curl https://storage.googleapis.com/git-repo-downloads/repo -o repo
+#mirror in China
+curl https://mirrors.tuna.tsinghua.edu.cn/git/git-repo -o repo
+```
 You can use below command to get all source code of this project
 
 ```bash
@@ -65,6 +71,8 @@ $ cd $HOME/devel/hypervisorForFun
 $ repo init -u https://github.com/hypervisorForFun/manifest.git -m default.xml --repo-url=git://codeaurora.org/tools/repo.git
 $ repo sync -j8
 ```
+Please use default_cn.xml instead of default.xml if you work that in China.
+
 ## 3.4 Get the toolchains
 In hypervisorForFun we're using different toolchains for different targets (depends on
 ARMv7-A ARMv8-A 64/32bit solutions). In any case start by downloading the
