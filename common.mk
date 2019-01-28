@@ -48,7 +48,7 @@ linux-defconfig-clean-common:
 # LINUX_CLEAN_COMMON_FLAGS should be defined in specific makefiles (hikey.mk,...)
 .PHONY: linux-clean-common
 linux-clean-common: linux-defconfig-clean
-	$(MAKE) -C $(LINUX_PATH) $(LINUX_CLEAN_COMMON_FLAGS) clean
+	$(MAKE) -j4 -C $(LINUX_PATH) $(LINUX_CLEAN_COMMON_FLAGS) clean
 
 # LINUX_CLEANER_COMMON_FLAGS should be defined in specific makefiles (hikey.mk,...)
 .PHONY: linux-cleaner-common
