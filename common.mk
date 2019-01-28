@@ -17,7 +17,9 @@ LINUX_OUTPUT_IMAGE ?= $(LINUX_PATH)/arch/arm64/boot/Image.gz
 
 
 
-QEMU_CONFIGURE_PARAMS_COMMON = --cc="gcc" --extra-cflags="-Wno-error"
+QEMU_CONFIGURE_PARAMS_COMMON = --cc="gcc" --extra-cflags="-Wno-error -g3" \
+			       --disable-strip --extra-ldflags="-g3" \
+			       --enable-debug --disable-pie
 fl:=$(GEN_ROOTFS_FILELIST)
 
 
